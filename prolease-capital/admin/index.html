@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Админ-панель — ProLease Capital</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <header class="header">
+    <a href="../index.html" class="logo">ProLease Capital</a>
+    <nav class="nav">
+      <a href="../index.html">Главная</a>
+      <a href="../pages/calculator.html">Калькулятор</a>
+      <a href="../pages/cabinet.html">Личный кабинет</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <div style="text-align: center; margin-bottom: 1rem;">
+      <span class="hero-badge">Панель управления</span>
+    </div>
+    <h1 style="font-size: 2rem; background: linear-gradient(135deg,#1c1917 0%,#065f46 50%,#059669 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; text-align: center;">Админ-панель</h1>
+    <p class="subtitle" style="text-align: center;">Аналитика договоров, выручка и управление портфелем</p>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="number" id="contracts-count">0</div>
+        <div class="label">Всего договоров</div>
+      </div>
+      <div class="stat-card">
+        <div class="number" id="active-count">0</div>
+        <div class="label">Активных</div>
+      </div>
+      <div class="stat-card">
+        <div class="number" id="revenue">0 ₽</div>
+        <div class="label">Выручка</div>
+      </div>
+      <div class="stat-card">
+        <div class="number" id="avg-payment">0 ₽</div>
+        <div class="label">Средний платёж</div>
+      </div>
+      <div class="stat-card">
+        <div class="number" id="expenses">0 ₽</div>
+        <div class="label">Расходы</div>
+      </div>
+      <div class="stat-card">
+        <div class="number" id="profit">0 ₽</div>
+        <div class="label">Прибыль</div>
+      </div>
+    </div>
+
+    <!-- Portfolio analytics -->
+    <div class="grid-3" style="margin-bottom: 2rem;">
+      <div class="card">
+        <h2>Статусы договоров</h2>
+        <div class="chart-vertical">
+          <div class="chart-bar-group">
+            <div class="chart-label">Активны</div>
+            <div class="chart-track">
+              <div class="chart-fill chart-fill--green" id="chart-active" style="width: 0%"></div>
+            </div>
+            <div class="chart-value" id="chart-active-label">0</div>
+          </div>
+          <div class="chart-bar-group">
+            <div class="chart-label">На рассмотрении</div>
+            <div class="chart-track">
+              <div class="chart-fill chart-fill--gold" id="chart-pending" style="width: 0%"></div>
+            </div>
+            <div class="chart-value" id="chart-pending-label">0</div>
+          </div>
+          <div class="chart-bar-group">
+            <div class="chart-label">Закрыты</div>
+            <div class="chart-track">
+              <div class="chart-fill chart-fill--gray" id="chart-closed" style="width: 0%"></div>
+            </div>
+            <div class="chart-value" id="chart-closed-label">0</div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <h2>Финансовые показатели</h2>
+        <div class="chart-vertical">
+          <div class="chart-bar-group">
+            <div class="chart-label">Выручка</div>
+            <div class="chart-track">
+              <div class="chart-fill chart-fill--green" id="chart-revenue-bar" style="width: 0%"></div>
+            </div>
+            <div class="chart-value" id="chart-revenue-label">0 ₽</div>
+          </div>
+          <div class="chart-bar-group">
+            <div class="chart-label">Расходы</div>
+            <div class="chart-track">
+              <div class="chart-fill chart-fill--gold" id="chart-expenses-bar" style="width: 0%"></div>
+            </div>
+            <div class="chart-value" id="chart-expenses-label">0 ₽</div>
+          </div>
+          <div class="chart-bar-group">
+            <div class="chart-label">Прибыль</div>
+            <div class="chart-track">
+              <div class="chart-fill chart-fill--green" id="chart-profit-bar" style="width: 0%"></div>
+            </div>
+            <div class="chart-value" id="chart-profit-label">0 ₽</div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <h2>Портфель</h2>
+        <div style="text-align: center; padding: 0.5rem 0;">
+          <div style="font-size: 2.5rem; font-weight: 800; background: var(--primary-gradient); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;" id="portfolio-total">0</div>
+          <div style="color: var(--text-secondary); font-size: 0.85rem; margin-top: 0.25rem;">Всего активов</div>
+        </div>
+        <div style="display: flex; justify-content: center; gap: 2rem; margin-top: 1rem;">
+          <div style="text-align: center;">
+            <div style="font-size: 1.25rem; font-weight: 700; color: var(--success);" id="portfolio-active">0</div>
+            <div style="color: var(--text-secondary); font-size: 0.75rem;">Активные</div>
+          </div>
+          <div style="text-align: center;">
+            <div style="font-size: 1.25rem; font-weight: 700; color: var(--gold);" id="portfolio-pending">0</div>
+            <div style="color: var(--text-secondary); font-size: 0.75rem;">В ожидании</div>
+          </div>
+          <div style="text-align: center;">
+            <div style="font-size: 1.25rem; font-weight: 700; color: var(--text-secondary);" id="portfolio-closed">0</div>
+            <div style="color: var(--text-secondary); font-size: 0.75rem;">Закрыты</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section class="card">
+      <h2>Реестр договоров</h2>
+      <div class="toolbar">
+        <input type="text" id="search-input" placeholder="Поиск по ID...">
+        <select id="status-filter">
+          <option value="all">Все статусы</option>
+          <option value="active">Активен</option>
+          <option value="pending">На рассмотрении</option>
+          <option value="closed">Закрыт</option>
+        </select>
+      </div>
+      <div style="overflow-x: auto;">
+        <table id="contracts-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Стоимость имущества</th>
+              <th>Ежемесячный платёж</th>
+              <th>Оплачено</th>
+              <th>Статус</th>
+              <th>Действие</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <div class="footer-logo">ProLease Capital</div>
+          <p class="footer-desc">Лизинг оборудования для малого и среднего бизнеса</p>
+        </div>
+        <div class="footer-col">
+          <div class="footer-heading">Навигация</div>
+          <a href="../index.html" class="footer-link">Главная</a>
+          <a href="../pages/calculator.html" class="footer-link">Калькулятор</a>
+        </div>
+        <div class="footer-col">
+          <div class="footer-heading">Контакты</div>
+          <div class="footer-text">Москва, ул. Образцова, 9/1</div>
+          <div class="footer-text">+7 (495) 123-45-67</div>
+          <div class="footer-text">info@prolease-capital.ru</div>
+        </div>
+      </div>
+      <div class="footer-bottom">© 2026 ProLease Capital. Учебный проект ПМ.05</div>
+    </div>
+  </footer>
+
+  <script src="../js/algorithms.js"></script>
+  <script src="../js/admin.js"></script>
+</body>
+</html>

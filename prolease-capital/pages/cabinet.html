@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Личный кабинет — ProLease Capital</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <header class="header">
+    <a href="../index.html" class="logo">ProLease Capital</a>
+    <nav class="nav">
+      <a href="../index.html">Главная</a>
+      <a href="calculator.html">Калькулятор</a>
+      <a href="cabinet.html" class="active">Личный кабинет</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <div style="text-align: center; margin-bottom: 1rem;">
+      <span class="hero-badge">Мои заявки</span>
+    </div>
+    <h1 style="font-size: 2rem; background: linear-gradient(135deg,#1c1917 0%,#065f46 50%,#059669 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; text-align: center;">Личный кабинет</h1>
+    <p class="subtitle" style="text-align: center;">Просмотр статуса поданных заявок на лизинг</p>
+
+    <div class="stats-grid" id="cabinet-stats">
+      <div class="stat-card">
+        <div class="number" id="total-apps">0</div>
+        <div class="label">Всего заявок</div>
+      </div>
+      <div class="stat-card">
+        <div class="number" id="pending-apps">0</div>
+        <div class="label">На рассмотрении</div>
+      </div>
+      <div class="stat-card">
+        <div class="number" id="active-apps">0</div>
+        <div class="label">Активных</div>
+      </div>
+    </div>
+
+    <div class="card" id="applications-list">
+      <h2>Список заявок</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>№</th>
+            <th>Стоимость имущества</th>
+            <th>Ежемесячный платёж</th>
+            <th>Срок</th>
+            <th>Статус</th>
+            <th>Дата подачи</th>
+          </tr>
+        </thead>
+        <tbody id="cabinet-body"></tbody>
+      </table>
+      <p id="cabinet-empty" style="text-align:center;padding:2rem 0;color:var(--text-secondary);">У вас пока нет заявок.</p>
+    </div>
+  </main>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const apps = JSON.parse(localStorage.getItem('leaseApplications') || '[]');
+      const tbody = document.getElementById('cabinet-body');
+      const empty = document.getElementById('cabinet-empty');
+
+      document.getElementById('total-apps').textContent = apps.length;
+      document.getElementById('pending-apps').textContent = apps.filter(a => a.status === 'pending').length;
+      document.getElementById('active-apps').textContent = apps.filter(a => a.status === 'active').length;
+
+      if (apps.length === 0) {
+        tbody.innerHTML = '';
+        empty.hidden = false;
+        return;
+      }
+
+      empty.hidden = true;
+
+      tbody.innerHTML = apps.toReversed().map(a => {
+        const statusClass = a.status === 'active' ? 'badge--active'
+          : a.status === 'pending' ? 'badge--pending'
+          : 'badge--closed';
+        const statusLabel = a.status === 'active' ? 'Активен'
+          : a.status === 'pending' ? 'На рассмотрении'
+          : 'Закрыт';
+        const date = a.createdAt ? new Date(a.createdAt).toLocaleDateString('ru-RU') : '—';
+        const price = a.assetPrice ? new Intl.NumberFormat('ru-RU').format(a.assetPrice) : '—';
+        const payment = a.monthlyPayment ? new Intl.NumberFormat('ru-RU').format(a.monthlyPayment) : '—';
+        const term = a.termMonths ? `${a.termMonths} мес.` : '—';
+
+        return `<tr>
+          <td>${String(a.id).slice(-5)}</td>
+          <td>${price} ₽</td>
+          <td>${payment} ₽</td>
+          <td>${term}</td>
+          <td><span class="badge ${statusClass}">${statusLabel}</span></td>
+          <td>${date}</td>
+        </tr>`;
+      }).join('');
+    });
+  </script>
+</body>
+</html>
